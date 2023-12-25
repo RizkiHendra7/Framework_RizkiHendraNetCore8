@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FrameworkRHP.Infrastructure.Repository.Core
+namespace FrameworkRHP.Infrastructure.Repository
 {
     public interface IGenericRepository<T> where T : class
     {

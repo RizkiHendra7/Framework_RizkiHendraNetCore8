@@ -1,5 +1,6 @@
-﻿using FrameworkRHP.Infrastructure.Context;
-using FrameworkRHP.Services;
+﻿using FrameworkRHP.Core.Models.EF;
+using FrameworkRHP.Infrastructure.Context;
+using FrameworkRHP.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,14 +12,20 @@ namespace FrameworkRHP.Infrastructure.UOW
         public EProcurementDbContext Context = null;
         private IDbContextTransaction? _objTran = null;
         private bool _disposed;
-        private string _errorMessage = string.Empty; 
-        public MUserRepository MUsers { get; private set; } 
+        private string _errorMessage = string.Empty;
+
+
+        public IUnitOfWork _unitOfWork;
+
+        public GenericRepository<Muser> MUsers { get; private set; } 
+        public GenericRepository<Mrole> MRoles { get; private set; } 
 
         public UnitOfWork(EProcurementDbContext _context)
         {
             Context = _context;
-            MUsers = new MUserRepository(Context);
-        }
+            MUsers = new GenericRepository<Muser>(Context);
+            MRoles = new GenericRepository<Mrole>(Context);
+        } 
 
         public void CreateTransaction()
         {
@@ -42,7 +49,7 @@ namespace FrameworkRHP.Infrastructure.UOW
             }
             catch (DbUpdateException ex)
             {
-                var exceptionEntries = ex.Entries.Where(e => e.State == EntityState.Detached);
+                var exceptionEntries = ex.Entries.Where(e => e.State == EntityState.Added);
                 foreach (var entry in exceptionEntries)
                 {
                     foreach (var error in entry.Entity.GetType().GetProperties()
@@ -53,6 +60,7 @@ namespace FrameworkRHP.Infrastructure.UOW
                         _errorMessage += $"Property: {error.Property} Error: Validation Failed {Environment.NewLine}";
                     }
                 }
+                _errorMessage = string.IsNullOrEmpty(_errorMessage) ? ex.Message : _errorMessage;
                 throw new Exception(_errorMessage, ex);
             }
         }

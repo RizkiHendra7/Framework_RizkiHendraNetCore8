@@ -1,5 +1,4 @@
-using FrameworkRHP.Core.Models.EF;
-using FrameworkRHP.Services.Interfaces;
+﻿using FrameworkRHP.Core.Models.EF;
 using FrameworkRHP.Services.Interfaces.GenericInterface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,44 +6,44 @@ namespace FrameWorkRHP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MUsersController : ControllerBase
+    public class MRolesController : ControllerBase
     {
-        public readonly IGenericService<Muser> _MUserService;
-        public MUsersController(IGenericService<Muser> MUserService)
+        public readonly IGenericService<Mrole> _MroleService;
+        public MRolesController(IGenericService<Mrole> MroleService)
         {
-            _MUserService = MUserService;
+            _MroleService = MroleService;
         }
-
+         
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
             try
             {
-                var MUserList = await _MUserService.GetAllData();
-                if (MUserList == null)
+                var MRoleList = await _MroleService.GetAllData();
+                if (MRoleList == null)
                 {
                     return NotFound();
                 }
-                return Ok(MUserList);
+                return Ok(MRoleList);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-
+           
         }
-
+         
         [HttpGet("{paramIntRoleId}")]
         public async Task<IActionResult> GetById(int paramIntRoleId)
         {
             try
-            {
-                var MUser = await _MUserService.GetDataById(paramIntRoleId);
+            { 
+                var MRole = await _MroleService.GetDataById(paramIntRoleId);
 
-                if (MUser != null)
+                if (MRole != null)
                 {
-                    return Ok(MUser);
+                    return Ok(MRole);
                 }
                 else
                 {
@@ -56,17 +55,17 @@ namespace FrameWorkRHP.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+         
         [HttpPost]
-        public async Task<IActionResult> Create(Muser paramMUserModel)
+        public async Task<IActionResult> Create(Mrole paramMRoleModel)
         {
             try
             {
-                var isMUserCreated = await _MUserService.CreateData(paramMUserModel);
+                var isMroleCreated = await _MroleService.CreateData(paramMRoleModel);
 
-                if (isMUserCreated)
+                if (isMroleCreated)
                 {
-                    return Ok(isMUserCreated);
+                    return Ok(isMroleCreated);
                 }
                 else
                 {
@@ -78,18 +77,18 @@ namespace FrameWorkRHP.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+         
         [HttpPut]
-        public async Task<IActionResult> Update(Muser paramMUserModel)
+        public async Task<IActionResult> Update(Mrole paramMRoleModel)
         {
             try
-            {
-                if (paramMUserModel != null)
+            { 
+                if (paramMRoleModel != null)
                 {
-                    var isMUserCreated = await _MUserService.UpdateData(paramMUserModel);
-                    if (isMUserCreated)
+                    var isMroleCreated = await _MroleService.UpdateData(paramMRoleModel);
+                    if (isMroleCreated)
                     {
-                        return Ok(isMUserCreated);
+                        return Ok(isMroleCreated);
                     }
                     return BadRequest();
                 }
@@ -103,17 +102,17 @@ namespace FrameWorkRHP.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+         
         [HttpDelete("{paramIntRoleId}")]
         public async Task<IActionResult> Delete(int paramIntRoleId)
         {
             try
-            {
-                var isMUserCreated = await _MUserService.DeleteData(paramIntRoleId);
+            { 
+                var isMroleCreated = await _MroleService.DeleteData(paramIntRoleId);
 
-                if (isMUserCreated)
+                if (isMroleCreated)
                 {
-                    return Ok(isMUserCreated);
+                    return Ok(isMroleCreated);
                 }
                 else
                 {
@@ -125,6 +124,6 @@ namespace FrameWorkRHP.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
-}
+
+} 

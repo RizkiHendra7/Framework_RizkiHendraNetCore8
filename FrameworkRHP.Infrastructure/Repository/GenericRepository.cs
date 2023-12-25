@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FrameworkRHP.Infrastructure.Repository.Core
+namespace FrameworkRHP.Infrastructure.Repository
 {
 
     public class GenericRepository<T> : IGenericRepository<T> where T : class

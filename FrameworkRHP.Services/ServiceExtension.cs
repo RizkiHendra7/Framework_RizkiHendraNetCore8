@@ -1,12 +1,13 @@
-﻿using FrameworkRHP.Infrastructure.Context;
-using FrameworkRHP.Infrastructure.Repository.Interface;
+﻿using FrameworkRHP.Core.Models.EF;
+using FrameworkRHP.Infrastructure.Context;
 using FrameworkRHP.Infrastructure.UOW;
-using FrameworkRHP.Services;
+using FrameworkRHP.Services.Interfaces.GenericInterface;
+using FrameworkRHP.Services.ServicesImplement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FrameworkRHP.Infrastructure
+namespace FrameworkRHP.Services
 {
     public static class ServiceExtension
     { 
@@ -19,8 +20,9 @@ namespace FrameworkRHP.Infrastructure
             //services.AddDbContext<DbContextClass>(options => 
             //    options.UseSqlServer(configuration.GetConnectionString("eProcurementDB")); 
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>(); 
-            //services.AddScoped<IMUserRepository, MUserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();   
+            services.AddScoped<IGenericService<Mrole>, MRoleService>();   
+            services.AddScoped<IGenericService<Muser>, MUserService>();   
 
             return services;
         }
